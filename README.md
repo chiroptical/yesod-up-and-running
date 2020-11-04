@@ -1,34 +1,9 @@
 ## November Goals
 
 - [ ] Add `/about` to the nav-bar
-- [ ] Build a REST API on `/person`
-  - `GET /person?name=...&age=...&address=...`
-  - `POST /person` with
-  ```json
-  {
-    "name": "chiroptical",
-    "age": 32,
-    "address": "somewhere"
-  }
-  ```
-  - `PUT /person` with
-  ```json
-  {
-    "id": 1,
-    "name": "chiroptical",
-    "age": 32,
-    "address": "somewhere else"
-  }
-  ```
-  - `DELETE /person` with
-  ```
-  {
-    "id": 1,
-    "name": "chiroptical",
-    "age": 32,
-    "address": "somewhere else"
-  }
-  ```
+- [ ] Build a REST API that conforms to `swagger.yaml`
+  - Idea borrowed from https://medium.com/swlh/restful-api-documentation-made-easy-with-swagger-and-openapi-6df7f26dcad
+  - Goal: Start from a specification and implement it
 - [ ] Something with cryponite
 - [ ] Something with megaparsec
 - [ ] Something with unliftio
