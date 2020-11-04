@@ -1,0 +1,6 @@
+<div .container>
+  <h1 #start>About This Site
+  <p #funky>
+    Hello World!
+  <a href=@{HomeR}>
+    Home
