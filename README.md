@@ -1,9 +1,12 @@
 ## November Goals
 
-- [ ] Add `/about` to the nav-bar
-- [ ] Build a REST API that conforms to `swagger.yaml`
+- [x] Add `/about` to the nav-bar
+- [x] Build a REST API that conforms to `swagger.yaml`
   - Idea borrowed from https://medium.com/swlh/restful-api-documentation-made-easy-with-swagger-and-openapi-6df7f26dcad
   - Goal: Start from a specification and implement it
+  - Someday:
+    - Maybe use https://hackage.haskell.org/package/aeson-better-errors
+- [ ] Continue Yesod book next section: https://www.yesodweb.com/book/shakespearean-templates
 - [ ] Something with cryponite
 - [ ] Something with megaparsec
 - [ ] Something with unliftio

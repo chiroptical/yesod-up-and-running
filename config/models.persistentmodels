@@ -16,3 +16,11 @@ Comment json -- Adding "json" causes ToJSON and FromJSON instances to be derived
     userId UserId Maybe
     deriving Eq
     deriving Show
+DonorEntity
+    bloodType Text
+    contactNumber Text
+    dateOfBirth Text
+    emergencyContactNumber Text
+    firstName Text
+    firstTimeDonor Bool
+    lastName Text

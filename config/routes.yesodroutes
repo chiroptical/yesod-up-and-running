@@ -15,4 +15,6 @@
 
 /about AboutR GET
 
-/person PersonR GET
+/api/donor DonorR POST GET
+
+/api/donor/#Int64 DonorByIdR GET DELETE PUT

@@ -64,8 +64,9 @@ import System.Log.FastLogger (
 import Handler.About
 import Handler.Comment
 import Handler.Common
+import Handler.Donor
+import Handler.DonorById
 import Handler.Home
-import Handler.Person
 import Handler.Profile
 
 -- This line actually creates our YesodDispatch instance. It is the second half

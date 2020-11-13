@@ -125,6 +125,12 @@ instance Yesod App where
                         }
                 , NavbarLeft $
                     MenuItem
+                        { menuItemLabel = "About"
+                        , menuItemRoute = AboutR
+                        , menuItemAccessCallback = True
+                        }
+                , NavbarLeft $
+                    MenuItem
                         { menuItemLabel = "Profile"
                         , menuItemRoute = ProfileR
                         , menuItemAccessCallback = isJust muser
@@ -180,7 +186,8 @@ instance Yesod App where
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
     isAuthorized AboutR _ = return Authorized
-    isAuthorized PersonR _ = return Authorized
+    isAuthorized DonorR _ = return Authorized
+    isAuthorized (DonorByIdR _) _ = return Authorized
     -- the profile route requires that the user is authenticated, so we
     -- delegate to that function
     isAuthorized ProfileR _ = isAuthenticated
