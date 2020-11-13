@@ -18,3 +18,5 @@
 /api/donor DonorR POST GET
 
 /api/donor/#Int64 DonorByIdR GET DELETE PUT
+
+/api/hash/#Text/#Text HashR GET
