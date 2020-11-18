@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE NoImplicitPrelude #-}
@@ -58,14 +59,19 @@ import System.Log.FastLogger (
     toLogStr,
  )
 
+import qualified Data.Cipher as Cipher
+
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
 
+import Crypto.Cipher.AES (AES256)
 import Handler.About
+import Handler.Cipher
 import Handler.Comment
 import Handler.Common
 import Handler.Donor
 import Handler.DonorById
+import Handler.Hash
 import Handler.Home
 import Handler.Profile
 
@@ -111,8 +117,15 @@ makeFoundation appSettings = do
     -- Perform database migration using our application's logging settings.
     runLoggingT (runSqlPool (runMigration migrateAll) pool) logFunc
 
-    -- Return the foundation
-    return $ mkFoundation pool
+    -- Generate cipher secret key and initialization vector
+    secretKey <- Cipher.genSecretKey @_ @_ @ByteString (undefined :: AES256) 32
+    initializationVector' <- Cipher.genRandomIV (undefined :: AES256)
+    let initializationVector = case initializationVector' of
+            Nothing -> error "Unable to generate cipher initialization vector"
+            Just iv -> iv
+
+    -- Return the foundation, updating the cipher secret key and initialization vector
+    return $ (mkFoundation pool){appCipherSecretKey = secretKey, appCipherInitializationVector = initializationVector}
 
 {- | Convert our foundation to a WAI Application by calling @toWaiAppPlain@ and
  applying some additional middlewares.

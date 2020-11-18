@@ -19,7 +19,10 @@ import Text.Jasmine (minifym)
 -- Used only when in "auth-dummy-login" setting is enabled.
 import Yesod.Auth.Dummy
 
+import Crypto.Cipher.AES (AES256)
+import Crypto.Cipher.Types (IV)
 import qualified Data.CaseInsensitive as CI
+import qualified Data.Cipher as Cipher
 import qualified Data.Text.Encoding as TE
 import Yesod.Auth.OpenId (IdentifierType (Claimed), authOpenId)
 import Yesod.Core.Types (Logger)
@@ -39,6 +42,8 @@ data App = App
       appConnPool :: ConnectionPool
     , appHttpManager :: Manager
     , appLogger :: Logger
+    , appCipherSecretKey :: Cipher.Key AES256 ByteString
+    , appCipherInitializationVector :: IV AES256
     }
 
 data MenuItem = MenuItem
@@ -188,6 +193,8 @@ instance Yesod App where
     isAuthorized AboutR _ = return Authorized
     isAuthorized DonorR _ = return Authorized
     isAuthorized (DonorByIdR _) _ = return Authorized
+    isAuthorized (HashR _ _) _ = return Authorized
+    isAuthorized CipherR _ = return Authorized
     -- the profile route requires that the user is authenticated, so we
     -- delegate to that function
     isAuthorized ProfileR _ = isAuthenticated
