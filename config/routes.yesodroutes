@@ -25,3 +25,5 @@
 /api/cipher/aes256/#Text CipherR GET
 
 /api/decipher/aes256/#Text DecipherR GET
+
+/api/generate/rsa256 GenerateR POST

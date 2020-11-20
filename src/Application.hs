@@ -44,6 +44,7 @@ import Handler.Common
 import Handler.Decipher
 import Handler.Donor
 import Handler.DonorById
+import Handler.Generate
 import Handler.Hash
 import Handler.Home
 import Handler.Profile

@@ -8,7 +8,25 @@
     - Maybe use https://hackage.haskell.org/package/aeson-better-errors
 - [ ] Continue Yesod book next section: https://www.yesodweb.com/book/shakespearean-templates
 - [ ] Something with cryponite
-  - Working on a hashing API in src/Handler/Hash.hs
+  - [x] Hashing API in src/Handler/Hash.hs
+  - [x] Symmetric cipher API in src/Handler/Cipher.hs and src/Handler/Decipher.hs
+  - RSA256 encrypt/decrypt
+    - [ ] `POST /api/generate/rsa256` to generate public and private keypair
+    - [ ] `POST /api/sign/rsa256` to sign a message and return it base64 encoded, requires
+    ```json
+    {
+      privateKey: base64Encoded,
+      message: string
+    }
+    ```
+    - [ ] `POST /api/verify/rsa256` to verify a message matches a signed message, requires
+    ```json
+    {
+      publicKey: base64Encoded,
+      signedMessage: base64Encoded,
+      message: string
+    }
+    ```
 - [ ] Something with megaparsec
 - [ ] Something with unliftio
 

@@ -196,6 +196,7 @@ instance Yesod App where
     isAuthorized (HashR _ _) _ = return Authorized
     isAuthorized (CipherR _) _ = return Authorized
     isAuthorized (DecipherR _) _ = return Authorized
+    isAuthorized GenerateR _ = return Authorized
     -- the profile route requires that the user is authenticated, so we
     -- delegate to that function
     isAuthorized ProfileR _ = isAuthenticated
