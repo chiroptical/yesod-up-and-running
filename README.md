@@ -8,6 +8,7 @@
     - Maybe use https://hackage.haskell.org/package/aeson-better-errors
 - [ ] Continue Yesod book next section: https://www.yesodweb.com/book/shakespearean-templates
 - [ ] Something with cryponite
+  - Working on a hashing API in src/Handler/Hash.hs
 - [ ] Something with megaparsec
 - [ ] Something with unliftio
 
