@@ -22,4 +22,6 @@
 -- ?base=base{16,32,64} [default: base16]
 /api/hash/#Text/#Text HashR GET
 
-/api/cipher/aes256 CipherR POST
+/api/cipher/aes256/#Text CipherR GET
+
+/api/decipher/aes256/#Text DecipherR GET

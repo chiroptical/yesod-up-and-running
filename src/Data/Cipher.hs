@@ -10,9 +10,14 @@ import Crypto.Error (CryptoError (..), CryptoFailable (..))
 import qualified Crypto.Random.Types as CRT
 import Data.ByteArray (ByteArray)
 import Data.ByteString (ByteString)
+import qualified Data.ByteString.Base64.URL as Base64
+import Data.Text (Text)
 
 data Key c a where
     Key :: (BlockCipher c, ByteArray a) => a -> Key c a
+
+showSecretKey :: BlockCipher c => Key c ByteString -> Text
+showSecretKey (Key bs) = Base64.encodeBase64 bs
 
 -- | Generates a string of bytes (key) of a specific length for a given block cipher
 genSecretKey :: forall m c a. (CRT.MonadRandom m, BlockCipher c, ByteArray a) => c -> Int -> m (Key c a)

@@ -25,12 +25,28 @@ module Application (
 ) where
 
 import Control.Monad.Logger (liftLoc, runLoggingT)
+
+-- Import all relevant handler modules here.
+-- Don't forget to add new modules to your cabal file!
+
+import Crypto.Cipher.AES (AES256)
+import qualified Data.Cipher as Cipher
 import Database.Persist.Postgresql (
     createPostgresqlPool,
     pgConnStr,
     pgPoolSize,
     runSqlPool,
  )
+import Handler.About
+import Handler.Cipher
+import Handler.Comment
+import Handler.Common
+import Handler.Decipher
+import Handler.Donor
+import Handler.DonorById
+import Handler.Hash
+import Handler.Home
+import Handler.Profile
 import Import
 import Language.Haskell.TH.Syntax (qLocation)
 import Network.HTTP.Client.TLS (getGlobalManager)
@@ -59,22 +75,6 @@ import System.Log.FastLogger (
     toLogStr,
  )
 
-import qualified Data.Cipher as Cipher
-
--- Import all relevant handler modules here.
--- Don't forget to add new modules to your cabal file!
-
-import Crypto.Cipher.AES (AES256)
-import Handler.About
-import Handler.Cipher
-import Handler.Comment
-import Handler.Common
-import Handler.Donor
-import Handler.DonorById
-import Handler.Hash
-import Handler.Home
-import Handler.Profile
-
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the
 -- comments there for more details.
@@ -94,6 +94,13 @@ makeFoundation appSettings = do
     appStatic <-
         (if appMutableStatic appSettings then staticDevel else static)
             (appStaticDir appSettings)
+
+    -- Generate cipher secret key and initialization vector
+    appCipherSecretKey <- Cipher.genSecretKey @_ @_ @ByteString (error "genSecretKey shouldn't call this argument" :: AES256) 32
+    initializationVector' <- Cipher.genRandomIV (error "genRandomIV shouldn't call this argument" :: AES256)
+    let appCipherInitializationVector = case initializationVector' of
+            Nothing -> error "Unable to generate cipher initialization vector"
+            Just iv -> iv
 
     -- We need a log function to create a connection pool. We need a connection
     -- pool to create our foundation. And we need our foundation to get a
@@ -117,15 +124,8 @@ makeFoundation appSettings = do
     -- Perform database migration using our application's logging settings.
     runLoggingT (runSqlPool (runMigration migrateAll) pool) logFunc
 
-    -- Generate cipher secret key and initialization vector
-    secretKey <- Cipher.genSecretKey @_ @_ @ByteString (undefined :: AES256) 32
-    initializationVector' <- Cipher.genRandomIV (undefined :: AES256)
-    let initializationVector = case initializationVector' of
-            Nothing -> error "Unable to generate cipher initialization vector"
-            Just iv -> iv
-
     -- Return the foundation, updating the cipher secret key and initialization vector
-    return $ (mkFoundation pool){appCipherSecretKey = secretKey, appCipherInitializationVector = initializationVector}
+    return $ mkFoundation pool
 
 {- | Convert our foundation to a WAI Application by calling @toWaiAppPlain@ and
  applying some additional middlewares.
